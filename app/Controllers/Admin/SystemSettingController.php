@@ -137,7 +137,7 @@ class SystemSettingController extends ResourceController {
         ]);
       }
       $metaKey = $request['meta_key'];
-      $metaValue = $request['description'] ?? null;
+      $metaValue = $request['meta_value'] ?? null;
       $lable = $request['label'] ?? 0;
       $fieldType = $request['field_type'] ?? null;
       $options = $request['options'] ?? null;
@@ -267,7 +267,7 @@ class SystemSettingController extends ResourceController {
         ], 404);
       }
       $metaKey = $request['meta_key'] ?? null;
-      $metaValue = $request['description'] ?? null;
+      $metaValue = $request['meta_value'] ?? null;
       $lable = $request['label'] ?? 0;
       $fieldType = $request['field_type'] ?? null;
       $options = $request['options'] ?? null;

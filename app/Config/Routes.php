@@ -21,6 +21,6 @@ $routes->resource(
   [
     'controller' => 'Admin\EmailHistoryController',
     // 'filter' => 'jwt',
-    'only' => ['index', 'show', 'create', 'delete']
+    'only' => ['index', 'show', 'create', 'update', 'delete']
   ]
 );

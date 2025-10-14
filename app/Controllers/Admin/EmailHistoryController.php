@@ -109,8 +109,8 @@ class EmailHistoryController extends ResourceController {
       log_message('error', $message);
       return $this->respond([
         'status' => false,
-        // 'message' => $message,
         'message' => 'server error',
+        // 'message' => $message,
       ]);
     }
   }
@@ -251,5 +251,68 @@ class EmailHistoryController extends ResourceController {
     $this->model->delete($id);
 
     return $this->respondDeleted(['id' => $id], 'Email history deleted successfully');
+  }
+
+  /**
+   * Update an existing resource object
+   *
+   * @param int|string|null $id
+   *
+   * @return \CodeIgniter\HTTP\ResponseInterface
+   */
+  public function update($id = null) {
+    try {
+      //Authorization
+      $auth = $this->jwtService->authenticateUser();
+      if (!$auth['status']) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
+      $userInfo = (array) $auth['user_info'];
+      $roleId = $userInfo['role_id'];
+      if (!isAdmin($roleId)) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
+
+      //Initial request
+      $request = $this->request->getJSON(true) ?? [];
+      //Validation
+      $rules    = EmailHistoryRequest::rules();
+      $messages = EmailHistoryRequest::messages();
+      if (!$this->validateData($request, $rules, $messages)) {
+        return $this->respond([
+          'status' => false,
+          'errors' => $this->validator->getErrors(),
+        ], 422);
+      }
+
+      $existingRecord = $this->model->find($id);
+      if (!$existingRecord) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.not_found', ['name' => $this->controllerName])
+        ], 404);
+      }
+
+      $this->model->update($id, $request);
+
+      return $this->respond([
+        'status' => true,
+        'message' => lang('Common.success.model_update', ['name' => $this->controllerName])
+      ]);
+    } catch (\Throwable $th) {
+      $message = "EmailHistoryController.update: ";
+      $message .= $th->getFile() . " " . $th->getLine() . " " . $th->getMessage();
+      log_message('error', $message);
+      return $this->respond([
+        'status' => false,
+        'message' => 'An error occurred during processing. Please try again later.'
+      ], 500);
+    }
   }
 }

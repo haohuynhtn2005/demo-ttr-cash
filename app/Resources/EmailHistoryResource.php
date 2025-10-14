@@ -46,6 +46,6 @@ class EmailHistoryResource  implements JsonSerializable {
      * @return array
      */
     public static function collection(array $resources): array {
-        return array_map(fn($resource) => (new static($resource))->get(), $resources);
+        return array_map(fn($resource) => (new static($resource))->toArray(), $resources);
     }
 }
