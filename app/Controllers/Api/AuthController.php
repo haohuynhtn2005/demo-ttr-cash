@@ -63,9 +63,10 @@ class AuthController extends ResourceController {
             "iss" => "Issuer of the JWT",
             "aud" => "Audience that the JWT",
             "sub" => "Subject of the JWT",
-            "iat" => $iat, //Time the JWT issued at
-            "exp" => $exp, // Expiration time of token
+            "iat" => $iat,
+            "exp" => $exp,
             "email" => $user['email'],
+            "role_id" => $user['role_id'],
         );
 
         $token = JWT::encode($payload, $key, 'HS256');

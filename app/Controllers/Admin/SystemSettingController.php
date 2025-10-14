@@ -8,20 +8,17 @@ use App\Resources\SystemSettingResource;
 use App\Services\JwtAuthService;
 use CodeIgniter\RESTful\ResourceController;
 
-class SystemSettingController extends ResourceController
-{
+class SystemSettingController extends ResourceController {
   protected $model;
   protected $jwtService;
   protected $controllerName = 'Setting';
 
-  public function __construct()
-  {
+  public function __construct() {
     $this->model = new SystemSettingModel();
     $this->jwtService = new JwtAuthService();
   }
 
-  public function index()
-  {
+  public function index() {
     try {
       //Authorization
       $auth = $this->jwtService->authenticateUser();
@@ -103,13 +100,12 @@ class SystemSettingController extends ResourceController
       log_message('error', $message);
       return $this->respond([
         'status' => false,
-        'message' => 'An error occurred during processing. Please try again later.'
+        'message' => $message,
       ]);
     }
   }
 
-  public function create()
-  {
+  public function create() {
     try {
       //Authorization
       $auth = $this->jwtService->authenticateUser();
@@ -181,8 +177,7 @@ class SystemSettingController extends ResourceController
     }
   }
 
-  public function show($id = null)
-  {
+  public function show($id = null) {
     try {
       //Authorization
       $auth = $this->jwtService->authenticateUser();
@@ -227,8 +222,7 @@ class SystemSettingController extends ResourceController
     }
   }
 
-  public function update($id = null)
-  {
+  public function update($id = null) {
     try {
       //Authorization
       $auth = $this->jwtService->authenticateUser();
@@ -291,8 +285,7 @@ class SystemSettingController extends ResourceController
     }
   }
 
-  public function delete($id = null)
-  {
+  public function delete($id = null) {
     try {
       //Authorization
       $auth = $this->jwtService->authenticateUser();
