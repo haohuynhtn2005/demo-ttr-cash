@@ -245,16 +245,8 @@ class SystemSettingController extends ResourceController {
         ], 403);
       }
 
-      $role = $this->model->find($id);
-      if (!$role) {
-        return $this->respond([
-          'status' => false,
-          'message' => lang('Common.error.not_found', ['name' => $this->controllerName])
-        ], 404);
-      }
-
       //Initial request
-      $request = $this->request->getJSON(true);
+      $request = $this->request->getJSON(true) ?? [];
       //Validation
       $rules    = SystemSettingRequest::rules();
       $messages = SystemSettingRequest::messages();
@@ -265,11 +257,32 @@ class SystemSettingController extends ResourceController {
         ]);
       }
 
+      $updatingRecord = $this->model->find($id);
+      if (!$updatingRecord) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.not_found', ['name' => $this->controllerName])
+        ], 404);
+      }
+      $metaKey = $request['meta_key'] ?? null;
+      $metaValue = $request['description'] ?? null;
+      $lable = $request['label'] ?? 0;
+      $fieldType = $request['field_type'] ?? null;
+
+      $recordByKey = $this->model->where('meta_key', $metaKey)->first();
+      if ($recordByKey && $recordByKey['id'] != $updatingRecord['id']) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.duplicate_key', ['name' => $this->controllerName]),
+        ]);
+      }
+
       //Process
       $this->model->update($id, [
-        'name' => $request['name'],
-        'role_type' => $request['role_type'],
-        'description' => $request['description'],
+        'meta_key' => $metaKey,
+        'meta_value' => $metaValue,
+        'label' => $lable,
+        'field_type' => $fieldType,
       ]);
 
       return $this->respond([
@@ -284,7 +297,8 @@ class SystemSettingController extends ResourceController {
       log_message('error', $message);
       return $this->respond([
         'status' => false,
-        'message' => 'An error occurred during processing. Please try again later.'
+        'message' => 'An error occurred during processing. Please try again later.',
+        'message' => $message,
       ]);
     }
   }
