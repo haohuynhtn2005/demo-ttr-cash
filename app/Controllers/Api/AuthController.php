@@ -7,12 +7,10 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 use Firebase\JWT\JWT;
 
-class AuthController extends ResourceController
-{
+class AuthController extends ResourceController {
     use ResponseTrait;
 
-    public function register()
-    {
+    public function register() {
         $rules = [
             'name' => 'required',
             'email' => 'required|valid_email|is_unique[users.email]',
@@ -34,11 +32,10 @@ class AuthController extends ResourceController
         return $this->respondCreated(['message' => 'User registered successfully']);
     }
 
-    public function login()
-    {
+    public function login() {
         $rules = [
             'email' => 'required|valid_email',
-            'password' => 'required|min_length[8]',
+            'password' => 'required',
         ];
 
         if (!$this->validate($rules)) {
@@ -46,13 +43,13 @@ class AuthController extends ResourceController
         }
 
         $model = new UserModel();
-        $user = $model->where('email', $this->request->getVar('email'))->first();
+        $user = $model->where('email', $this->request->getPost('email'))->first();
 
         if (!$user) {
             return $this->failNotFound('Email not found');
         }
 
-        $verify = password_verify($this->request->getVar('password'), $user['password']);
+        $verify = password_verify($this->request->getPost('password'), $user['password']);
 
         if (!$verify) {
             return $this->fail('Wrong password');
