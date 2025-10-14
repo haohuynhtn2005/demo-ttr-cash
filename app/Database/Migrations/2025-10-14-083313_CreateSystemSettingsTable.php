@@ -32,6 +32,10 @@ class CreateSystemSettingsTable extends Migration
                 'constraint' => '255',
                 'null'       => true,
             ],
+            'options' => [
+                'type' => 'TEXT',
+                'null' => true,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

@@ -5,10 +5,11 @@ namespace App\Requests\SystemSetting;
 class SystemSettingRequest {
     public static function rules(): array {
         return [
-            'meta_key'   => 'required|max_length[255]', //varchar
-            'meta_value' => 'permit_empty', //text
-            'label'      => 'required|max_length[255]', //varchar
+            'meta_key'   => 'required|max_length[255]',
+            'meta_value' => 'permit_empty',
+            'label'      => 'required|max_length[255]',
             'field_type' => 'permit_empty|max_length[255]',
+            'options'    => 'permit_empty',
         ];
     }
 

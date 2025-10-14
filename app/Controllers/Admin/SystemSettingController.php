@@ -140,6 +140,7 @@ class SystemSettingController extends ResourceController {
       $metaValue = $request['description'] ?? null;
       $lable = $request['label'] ?? 0;
       $fieldType = $request['field_type'] ?? null;
+      $options = $request['options'] ?? null;
 
       //Process
       $exist = $this->model->where('meta_key', $metaKey)->first();
@@ -155,6 +156,7 @@ class SystemSettingController extends ResourceController {
         'meta_value' => $metaValue,
         'label' => $lable,
         'field_type' => $fieldType,
+        'options' => $options,
       ]);
       if (!$insertedId) {
         return $this->respond([
@@ -268,6 +270,7 @@ class SystemSettingController extends ResourceController {
       $metaValue = $request['description'] ?? null;
       $lable = $request['label'] ?? 0;
       $fieldType = $request['field_type'] ?? null;
+      $options = $request['options'] ?? null;
 
       $recordByKey = $this->model->where('meta_key', $metaKey)->first();
       if ($recordByKey && $recordByKey['id'] != $updatingRecord['id']) {
@@ -283,6 +286,7 @@ class SystemSettingController extends ResourceController {
         'meta_value' => $metaValue,
         'label' => $lable,
         'field_type' => $fieldType,
+        'options' => $options,
       ]);
 
       return $this->respond([
