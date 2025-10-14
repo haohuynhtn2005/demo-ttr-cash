@@ -1,8 +1,7 @@
 <?php
 
-use CodeIgniter\Router\RouteCollection;
+//e tự tạo route restapi để có được endpoint có dạng,
 
-/**
- * @var RouteCollection $routes
- */
-$routes->get('/', 'Home::index');
+//admin/system-settings
+$routes->get('/', 'Home1::index');
+$routes->get('/admin/system-settings', 'Setting::index');
