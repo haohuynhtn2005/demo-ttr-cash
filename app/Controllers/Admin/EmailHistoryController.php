@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Requests\EmailHistoryRequest;
 use App\Models\EmailHistoryModel;
 use App\Resources\EmailHistoryResource;
 use App\Services\JwtAuthService;
@@ -14,6 +15,7 @@ class EmailHistoryController extends ResourceController {
 
   protected $model;
   protected $jwtService;
+  protected $controllerName = 'Email History';
 
   public function __construct() {
     $this->model = new EmailHistoryModel();
@@ -121,12 +123,49 @@ class EmailHistoryController extends ResourceController {
    * @return \CodeIgniter\HTTP\ResponseInterface
    */
   public function show($id = null) {
-    $data = $this->model->find($id);
-    if (!$data) {
-      return $this->failNotFound('No email history found with id ' . $id);
+    try {
+      //Authorization
+      $auth = $this->jwtService->authenticateUser();
+      if (!$auth['status']) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
+      $userInfo = (array) $auth['user_info'];
+      $roleId = $userInfo['role_id'];
+      if (!isAdmin($roleId)) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
+
+      $data = $this->model->find($id);
+      if (!$data) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.not_found', ['name' => $this->controllerName])
+        ], 404);
+      }
+
+      $resource = new EmailHistoryResource($data);
+      return $this->respond($resource);
+      return $this->respond([
+        'status' => true,
+        'data' => $resource,
+      ]);
+    } catch (\Throwable $th) {
+      $message = "EmailHisotryController.show: ";
+      $message .= $th->getFile() . " ";
+      $message .= $th->getLine() . " ";
+      $message .= $th->getMessage() . " ";
+      log_message('error', $message);
+      return $this->respond([
+        'status' => false,
+        'message' => 'An error occurred during processing. Please try again later.'
+      ]);
     }
-    $resource = new EmailHistoryResource($data);
-    return $this->respond($resource->get());
   }
 
   /**
@@ -135,33 +174,65 @@ class EmailHistoryController extends ResourceController {
    * @return \CodeIgniter\HTTP\ResponseInterface
    */
   public function create() {
-    $rules = [
-      'recipient' => 'required|valid_email',
-      'subject'   => 'required',
-      'body'      => 'required',
-      'status'    => 'required|in_list[0,1]', // Assuming 0 for failed, 1 for sent
-    ];
+    try {
+      //Authorization
+      $auth = $this->jwtService->authenticateUser();
+      if (!$auth['status']) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
+      $userInfo = (array) $auth['user_info'];
+      $roleId = $userInfo['role_id'];
+      if (!isAdmin($roleId)) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
 
-    if (!$this->validate($rules)) {
-      return $this->fail($this->validator->getErrors());
+      //Initial request
+      $request = $this->request->getJSON(true) ?? [];
+      //Validation
+      $rules    = EmailHistoryRequest::rules();
+      $messages = EmailHistoryRequest::messages();
+      if (!$this->validateData($request, $rules, $messages)) {
+        return $this->respond([
+          'status' => false,
+          'errors' => $this->validator->getErrors(),
+        ], 422);
+      }
+      $request['status'] = 1;
+      $request['resent_times'] = 1;
+      $insertedId = $this->model->insert($request);
+      if (!$insertedId) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.model_create', ['name' => $this->controllerName])
+        ], 400);
+      }
+
+      $newRecord = $this->model->find($insertedId);
+      $resource = new EmailHistoryResource($newRecord);
+
+      return $this->respondCreated([
+        'status' => true,
+        'message' => lang('Common.success.model_create', ['name' => $this->controllerName]),
+        'data' => $resource->get()
+      ]);
+    } catch (\Throwable $th) {
+      $message = "EmailHistoryController.create: ";
+      $message .= $th->getFile() . " ";
+      $message .= $th->getLine() . " ";
+      $message .= $th->getMessage() . " ";
+      log_message('error', $message);
+      return $this->respond([
+        'status' => false,
+        'message' => 'An error occurred during processing. Please try again later.',
+        'message' => $message,
+      ], 500);
     }
-
-    $data = $this->request->getPost();
-
-    $id = $this->model->insert($data);
-    if ($this->model->errors()) {
-      return $this->fail($this->model->errors());
-    }
-
-    $response = [
-      'status'   => 201,
-      'error'    => null,
-      'messages' => [
-        'success' => 'Email history created successfully'
-      ],
-      'data' => $this->model->find($id)
-    ];
-    return $this->respondCreated($response);
   }
 
   /**

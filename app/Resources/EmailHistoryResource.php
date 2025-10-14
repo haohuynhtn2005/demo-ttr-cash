@@ -2,13 +2,18 @@
 
 namespace App\Resources;
 
-class EmailHistoryResource
-{
-    protected $data;
+use JsonSerializable;
 
-    public function __construct($resource)
-    {
-        $this->data = $resource;
+class EmailHistoryResource  implements JsonSerializable {
+    protected $resource;
+
+    public function __construct($resource) {
+        $this->resource = $resource;
+    }
+
+
+    public function jsonSerialize(): mixed {
+        return $this->toArray();
     }
 
     /**
@@ -16,26 +21,21 @@ class EmailHistoryResource
      *
      * @return array
      */
-    public function get(): array
-    {
-        if (!$this->data) {
-            return [];
-        }
-
+    public function toArray(): array {
         return [
-            'id'            => (int) $this->data['id'],
-            'code'          => $this->data['code'],
-            'recipient'     => $this->data['recipient'],
-            'cc'            => $this->data['cc'],
-            'bcc'           => $this->data['bcc'],
-            'subject'       => $this->data['subject'],
-            'body'          => $this->data['body'],
-            'status'        => (int) $this->data['status'],
-            'status_text'   => $this->data['status'] == 1 ? 'Sent' : 'Failed/Pending',
-            'error_message' => $this->data['error_message'],
-            'sent_at'       => $this->data['sent_at'],
-            'resent_times'  => (int) $this->data['resent_times'],
-            'created_at'    => $this->data['created_at'],
+            'id'            => (int) $this->resource['id'],
+            'code'          => $this->resource['code'],
+            'recipient'     => $this->resource['recipient'],
+            'cc'            => $this->resource['cc'],
+            'bcc'           => $this->resource['bcc'],
+            'subject'       => $this->resource['subject'],
+            'body'          => $this->resource['body'],
+            'status'        => (int) $this->resource['status'],
+            'status_text'   => $this->resource['status'] == 1 ? 'Sent' : 'Failed/Pending',
+            'error_message' => $this->resource['error_message'],
+            'sent_at'       => $this->resource['sent_at'],
+            'resent_times'  => (int) $this->resource['resent_times'],
+            'created_at'    => $this->resource['created_at'],
         ];
     }
 
@@ -45,8 +45,7 @@ class EmailHistoryResource
      * @param array $resources
      * @return array
      */
-    public static function collection(array $resources): array
-    {
-        return array_map(fn ($resource) => (new static($resource))->get(), $resources);
+    public static function collection(array $resources): array {
+        return array_map(fn($resource) => (new static($resource))->get(), $resources);
     }
 }
