@@ -9,5 +9,6 @@ class DatabaseSeeder extends Seeder {
     $this->call('UserRoleSeeder');
     $this->call('UserSeeder');
     $this->call('SystemSettingSeeder');
+    $this->call('EmailHistorySeeder');
   }
 }

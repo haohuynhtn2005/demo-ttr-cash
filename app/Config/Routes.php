@@ -16,11 +16,11 @@ $routes->get('/admin/system-settings/(:segment)', 'Admin\SystemSettingController
 $routes->put('/admin/system-settings/(:segment)', 'Admin\SystemSettingController::update/$1');
 $routes->patch('/admin/system-settings/(:segment)', 'Admin\SystemSettingController::update/$1');
 $routes->delete('/admin/system-settings/(:segment)', 'Admin\SystemSettingController::delete/$1');
-$routes->apiResource(
-  'admin/email-histories',
+$routes->resource(
+  'admin/email-history',
   [
     'controller' => 'Admin\EmailHistoryController',
-    'filter' => 'jwt',
+    // 'filter' => 'jwt',
     'only' => ['index', 'show', 'create', 'delete']
   ]
 );
