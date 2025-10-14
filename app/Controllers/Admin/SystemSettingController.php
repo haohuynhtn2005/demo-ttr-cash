@@ -3,7 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Models\SystemSettingModel;
-use App\Requests\SystemSetting\CreateSystemSettingRequest;
+use App\Requests\SystemSetting\SystemSettingRequest;
 use App\Resources\SystemSettingResource;
 use App\Services\JwtAuthService;
 use CodeIgniter\RESTful\ResourceController;
@@ -100,7 +100,8 @@ class SystemSettingController extends ResourceController {
       log_message('error', $message);
       return $this->respond([
         'status' => false,
-        'message' => $message,
+        // 'message' => $message,
+        'message' => 'server error',
       ]);
     }
   }
@@ -125,22 +126,23 @@ class SystemSettingController extends ResourceController {
       }
 
       //Initial request
-      $request = $this->request->getJSON(true);
+      $request = $this->request->getJSON(true) ?? [];
       //Validation
-      $rules    = CreateSystemSettingRequest::rules();
-      $messages = CreateSystemSettingRequest::messages();
+      $rules    = SystemSettingRequest::rules();
+      $messages = SystemSettingRequest::messages();
       if (!$this->validateData($request, $rules, $messages)) {
         return $this->respond([
           'status' => false,
           'errors' => $this->validator->getErrors(),
         ]);
       }
-      $name = $request['name'];
-      $description = $request['description'] ?? null;
-      $status = $request['status'] ?? 0;
+      $metaKey = $request['meta_key'];
+      $metaValue = $request['description'] ?? null;
+      $lable = $request['label'] ?? 0;
+      $fieldType = $request['field_type'] ?? null;
 
       //Process
-      $exist = $this->model->where('name', $name)->first();
+      $exist = $this->model->where('meta_key', $metaKey)->first();
       if ($exist) {
         return $this->respond([
           'status' => false,
@@ -149,9 +151,10 @@ class SystemSettingController extends ResourceController {
       }
 
       $insertedId = $this->model->insert([
-        'name' => $name,
-        'description' => $description,
-        'status' => (int)$status,
+        'meta_key' => $metaKey,
+        'meta_value' => $metaValue,
+        'label' => $lable,
+        'field_type' => $fieldType,
       ]);
       if (!$insertedId) {
         return $this->respond([
@@ -172,7 +175,8 @@ class SystemSettingController extends ResourceController {
       log_message('error', $message);
       return $this->respond([
         'status' => false,
-        'message' => 'An error occurred during processing. Please try again later.'
+        'message' => 'An error occurred during processing. Please try again later.',
+        'message' => $message,
       ]);
     }
   }
@@ -252,8 +256,8 @@ class SystemSettingController extends ResourceController {
       //Initial request
       $request = $this->request->getJSON(true);
       //Validation
-      $rules    = CreateSystemSettingRequest::rules();
-      $messages = CreateSystemSettingRequest::messages();
+      $rules    = SystemSettingRequest::rules();
+      $messages = SystemSettingRequest::messages();
       if (!$this->validateData($request, $rules, $messages)) {
         return $this->respond([
           'status' => false,

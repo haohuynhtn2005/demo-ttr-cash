@@ -13,7 +13,7 @@ class SystemSettingModel extends Model {
   protected $returnType = 'array';
   protected $useSoftDeletes = false;
 
-  protected $allowedFields = ['name', 'description', 'value', 'status', 'created_at', 'updated_at'];
+  protected $allowedFields = ['meta_key', 'meta_value', 'label', 'field_type', 'created_at', 'updated_at'];
 
   protected $useTimestamps = true;
   protected $dateFormat    = 'datetime';
