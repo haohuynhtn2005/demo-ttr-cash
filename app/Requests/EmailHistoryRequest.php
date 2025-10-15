@@ -18,7 +18,7 @@ class EmailHistoryRequest {
       'body'          => 'required|string',
       'error_message' => 'permit_empty|string',
       'sent_at'       => 'permit_empty|valid_date',
-      'resent_times'  => 'permit_empty|integer',
+      'resent_times'  => 'permit_empty|integer|less_than_equal_to[99]',
     ];
   }
 
@@ -38,6 +38,9 @@ class EmailHistoryRequest {
       ],
       'body' => [
         'required' => 'The email body is required.',
+      ],
+      'resent_times' => [
+        'less_than_equal_to' => 'The resent times must be less than or equal to 99.',
       ],
     ];
   }
