@@ -16,9 +16,7 @@ class JwtAuthService {
     private string $algorithm = 'HS256';
 
     public function __construct() {
-        // It's crucial to set a strong, secret key in your .env file (app.encryptKey)
-        // or directly in app/Config/Encryption.php
-        $this->key = config('Encryption')->key;
+        $this->key = getenv('jwt.secret');
         $this->expireTime = 3600; // Token is valid for 1 hour
     }
 

@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "e001b9a1-5ee8-4a2e-b69b-6002fedfaa21",
+		"name": "demo-ttr-cash",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40426095"
+	},
+	"item": [
+		{
+			"name": "api/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/login",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/system-settings",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"system-settings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQzMjQ5MiwiZXhwIjoxNzYwNDM2MDkyLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.VWynnr8A-0cKYn6dvSWFKolEbh8HGVtMjLJQIb77j0g",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meta_key\": \"abc2\",\r\n    \"label\": \"xyz\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/system-settings",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"system-settings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQzMjQ5MiwiZXhwIjoxNzYwNDM2MDkyLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.VWynnr8A-0cKYn6dvSWFKolEbh8HGVtMjLJQIb77j0g",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meta_key\": \"abc\",\r\n    \"label\": \"xyz\"\r\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/system-settings/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"system-settings",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQzMjQ5MiwiZXhwIjoxNzYwNDM2MDkyLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.VWynnr8A-0cKYn6dvSWFKolEbh8HGVtMjLJQIb77j0g",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meta_key\": \"abc\",\r\n    \"label\": \"xyz\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/system-settings/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"system-settings",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQzMjQ5MiwiZXhwIjoxNzYwNDM2MDkyLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.VWynnr8A-0cKYn6dvSWFKolEbh8HGVtMjLJQIb77j0g",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{API_URL}}/admin/system-settings/3",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"system-settings",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get email",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/email-history",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"email-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQzMjQ5MiwiZXhwIjoxNzYwNDM2MDkyLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.VWynnr8A-0cKYn6dvSWFKolEbh8HGVtMjLJQIb77j0g",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"recipient\": \"abc2@a.a\",\r\n    \"subject\": \"xyz\",\r\n    \"body\": \"ok luon\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/email-history",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"email-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read email",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQzMjQ5MiwiZXhwIjoxNzYwNDM2MDkyLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.VWynnr8A-0cKYn6dvSWFKolEbh8HGVtMjLJQIb77j0g",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meta_key\": \"abc\",\r\n    \"label\": \"xyz\"\r\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/email-history/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"email-history",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update email",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQzMjQ5MiwiZXhwIjoxNzYwNDM2MDkyLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.VWynnr8A-0cKYn6dvSWFKolEbh8HGVtMjLJQIb77j0g",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"abc\",\r\n    \"recipient\": \"xyz@a.a\",\r\n    \"subject\": \"ok\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/admin/email-history/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"admin",
+						"email-history",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIgb2YgdGhlIEpXVCIsImF1ZCI6IkF1ZGllbmNlIHRoYXQgdGhlIEpXVCIsInN1YiI6IlN1YmplY3Qgb2YgdGhlIEpXVCIsImlhdCI6MTc2MDQ5MjM5NSwiZXhwIjoxNzYwNDk1OTk1LCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjEifQ.67m-yfg3S3-eiYW_jGzBR6fX9CrGtGd9p3S-vCoCYQg",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
