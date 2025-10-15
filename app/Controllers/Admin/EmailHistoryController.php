@@ -10,7 +10,6 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
 class EmailHistoryController extends ResourceController {
-  // use ResponseTrait; // Already in ResourceController
   use ResponseTrait;
 
   protected $model;
@@ -236,24 +235,6 @@ class EmailHistoryController extends ResourceController {
   }
 
   /**
-   * Delete the designated resource object from the model
-   *
-   * @param int|string|null $id
-   *
-   * @return \CodeIgniter\HTTP\ResponseInterface
-   */
-  public function delete($id = null) {
-    $data = $this->model->find($id);
-    if (!$data) {
-      return $this->failNotFound('No email history found with id ' . $id);
-    }
-
-    $this->model->delete($id);
-
-    return $this->respondDeleted(['id' => $id], 'Email history deleted successfully');
-  }
-
-  /**
    * Update an existing resource object
    *
    * @param int|string|null $id
@@ -313,6 +294,58 @@ class EmailHistoryController extends ResourceController {
         'status' => false,
         'message' => 'An error occurred during processing. Please try again later.'
       ], 500);
+    }
+  }
+
+  /**
+   * Delete the designated resource object from the model
+   *
+   * @param int|string|null $id
+   *
+   * @return \CodeIgniter\HTTP\ResponseInterface
+   */
+  public function delete($id = null) {
+    try {
+      //Authorization
+      $auth = $this->jwtService->authenticateUser();
+      if (!$auth['status']) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
+      $userInfo = (array) $auth['user_info'];
+      $roleId = $userInfo['role_id'];
+      if (!isAdmin($roleId)) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.no_authorize')
+        ], 403);
+      }
+
+      $role = $this->model->find($id);
+      if (!$role) {
+        return $this->respond([
+          'status' => false,
+          'message' => lang('Common.error.not_found', ['name' => $this->controllerName])
+        ], 404);
+      }
+      $this->model->delete($id);
+
+      return $this->respond([
+        'status' => true,
+        'message' => lang('Common.success.model_delete', ['name' => $this->controllerName])
+      ]);
+    } catch (\Throwable $th) {
+      $message = "SystemSettingController.delete failed: ";
+      $message .= $th->getFile() . " ";
+      $message .= $th->getLine() . " ";
+      $message .= $th->getMessage() . " ";
+      log_message('error', $message);
+      return $this->respond([
+        'status' => false,
+        'message' => 'An error occurred during processing. Please try again later.'
+      ]);
     }
   }
 }
